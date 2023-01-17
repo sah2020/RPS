@@ -36,6 +36,16 @@ public class GameController {
         return ResponseEntity.ok(gameService.getRules());
     }
 
+   @PutMapping("/rule/{id}")
+    public ResponseEntity<ResponseDto> editRule(@PathVariable Long id, @RequestBody GameRuleCreateDto gameRuleCreateDto) {
+        return ResponseEntity.ok(gameService.editRule(id, gameRuleCreateDto));
+    }
+
+   @DeleteMapping("/rule/{id}")
+    public ResponseEntity<ResponseDto> deleteRule(@PathVariable Long id) {
+        return ResponseEntity.ok(gameService.deleteRule(id));
+    }
+
     @PostMapping("/play-curb/{choice}")
     public ResponseEntity<ResponseDto> playWithCurb(@PathVariable String choice) {
         return ResponseEntity.ok(gameService.play(choice, true));

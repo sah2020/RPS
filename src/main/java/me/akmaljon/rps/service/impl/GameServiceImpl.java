@@ -137,4 +137,32 @@ public class GameServiceImpl implements GameService {
         return new ResponseDto(gameResultDto);
 
     }
+
+    @Override
+    public ResponseDto editRule(Long id, GameRuleCreateDto gameRuleCreateDto) {
+        if (id == null || gameRuleCreateDto == null) {
+            throw new BadRequestException("Request doesn't contain required objects");
+        }
+        //checking if this rule exists in the database
+        boolean exists = gameRuleRepository.existsById(id);
+        if (!exists) {
+            throw new ConflictException("Game Rule not found");
+        }
+
+        //for quick edit implementation, this logic is applied
+        //first, delete existing rule
+        gameRuleRepository.deleteById(id);
+
+        //second, create new rule
+        return this.createRule(gameRuleCreateDto);
+    }
+
+    @Override
+    public ResponseDto deleteRule(Long id) {
+        if (id == null) {
+            throw new BadRequestException("Id should not be null");
+        }
+        gameRuleRepository.deleteById(id);
+        return new ResponseDto("Deleted");
+    }
 }

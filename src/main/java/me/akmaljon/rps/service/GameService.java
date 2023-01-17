@@ -15,4 +15,8 @@ public interface GameService {
     ResponseDto getRules();
 
     ResponseDto play(String choice, boolean playWithCurb);
+
+    ResponseDto editRule(Long id, GameRuleCreateDto gameRuleCreateDto);
+
+    ResponseDto deleteRule(Long id);
 }
