@@ -1,18 +1,20 @@
 package me.akmaljon.rps.dto;
 
-public class ResponseDto {
+import java.io.Serializable;
+
+public class ResponseDto implements Serializable {
     private Integer statusCode;
-    private String body;
+    private Object body;
 
     public ResponseDto() {
     }
 
-    public ResponseDto(Integer statusCode, String body) {
+    public ResponseDto(Integer statusCode, Object body) {
         this.statusCode = statusCode;
         this.body = body;
     }
 
-    public ResponseDto(String body) {
+    public ResponseDto(Object body) {
         this.statusCode = 200;
         this.body = body;
     }
@@ -25,11 +27,11 @@ public class ResponseDto {
         this.statusCode = statusCode;
     }
 
-    public String getBody() {
+    public Object getBody() {
         return body;
     }
 
-    public void setBody(String body) {
+    public void setBody(Object body) {
         this.body = body;
     }
 }

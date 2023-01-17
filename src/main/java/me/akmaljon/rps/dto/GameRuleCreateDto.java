@@ -1,6 +1,8 @@
 package me.akmaljon.rps.dto;
 
-public class GameRuleCreateDto {
+import java.io.Serializable;
+
+public class GameRuleCreateDto implements Serializable {
     private String firstChoice;
     private String secondChoice;
     private String winner;
