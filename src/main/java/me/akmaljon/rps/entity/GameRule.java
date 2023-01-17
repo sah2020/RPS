@@ -47,4 +47,8 @@ public class GameRule {
     public void setFirstChoiceWinner(Boolean firstChoiceWinner) {
         isFirstChoiceWinner = firstChoiceWinner;
     }
+
+    public Long getId() {
+        return id;
+    }
 }

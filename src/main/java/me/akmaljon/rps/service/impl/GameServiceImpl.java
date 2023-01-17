@@ -1,5 +1,6 @@
 package me.akmaljon.rps.service.impl;
 
+import me.akmaljon.rps.dto.GameResultDto;
 import me.akmaljon.rps.dto.GameRuleCreateDto;
 import me.akmaljon.rps.dto.ResponseDto;
 import me.akmaljon.rps.entity.GameRule;
@@ -82,9 +83,11 @@ public class GameServiceImpl implements GameService {
         List<GameRule> gameRules = gameRuleRepository.findAll();
 
         List<String> rulesText = gameRules.stream().map(rule ->
-                rule.getFirstChoiceWinner() ? rule.getFirstChoice() + " beats " + rule.getSecondChoice() :
-                        rule.getSecondChoice() + " beats " + rule.getFirstChoice()).collect(Collectors.toList());
-        return new ResponseDto(rulesText.toString());
+                        rule.getFirstChoiceWinner() ?
+                                rule.getId().toString() + ". " + rule.getFirstChoice() + " beats " + rule.getSecondChoice() :
+                                rule.getId().toString() + ". " + rule.getSecondChoice() + " beats " + rule.getFirstChoice())
+                .collect(Collectors.toList());
+        return new ResponseDto(rulesText);
     }
 
     @Override
@@ -93,6 +96,9 @@ public class GameServiceImpl implements GameService {
         if (!(choice.equalsIgnoreCase("rock") || choice.equalsIgnoreCase("paper") || choice.equalsIgnoreCase("scissors"))) {
             throw new BadRequestException("This object is not found in the game");
         }
+
+        GameResultDto gameResultDto = new GameResultDto();
+        gameResultDto.setPlayersChoice(choice);
 
         ResponseDto responseDto;
         if (playWithCurb) {
@@ -104,10 +110,12 @@ public class GameServiceImpl implements GameService {
         if (responseDto.getStatusCode() != 200) {
             throw new ConflictException("Other player cannot play now");
         }
-        String secondChoice = responseDto.getBody();
+        String secondChoice = String.valueOf(responseDto.getBody());
+        gameResultDto.setOpponentsChoice(secondChoice);
 
         if (choice.equalsIgnoreCase(secondChoice)) {
-            return new ResponseDto("Draw!");
+            gameResultDto.setResult("Draw!");
+            return new ResponseDto(gameResultDto);
         }
 
         //sorting choices alphabetically
@@ -123,9 +131,10 @@ public class GameServiceImpl implements GameService {
         }
 
         //logical XOR operator: same values result in false
-        String message = isFirstChoiceWinner ^ gameRule.getFirstChoiceWinner() ? "CURB lost(" : "You won)";
+        String result = isFirstChoiceWinner ^ gameRule.getFirstChoiceWinner() ? "You lost(" : "You won)";
+        gameResultDto.setResult(result);
 
-        return new ResponseDto(message);
+        return new ResponseDto(gameResultDto);
 
     }
 }
