@@ -1,0 +1,4 @@
+id,first_choice,second_choice,is_first_choice_winner
+1,rock,scissors,true
+2,paper,scissors,false
+3,paper,rock,true

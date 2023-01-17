@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-initial-game-rules
+      author: Akmaljon
+      preConditions:
+        - onFail: MARK_RAN
+        - sqlCheck:
+            expectedResult: 0
+            sql: select count(*) from game_rule
+
+      changes:
+        - loadData:
+            tableName: game_rule
+            file: db/loadInitialData/addGameRulesRPS.csv
+            encoding: UTF-8
