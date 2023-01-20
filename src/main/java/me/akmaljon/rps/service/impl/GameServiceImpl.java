@@ -92,10 +92,6 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public ResponseDto play(String choice, boolean playWithCurb) {
-        //validating incoming choice
-        if (!(choice.equalsIgnoreCase("rock") || choice.equalsIgnoreCase("paper") || choice.equalsIgnoreCase("scissors"))) {
-            throw new BadRequestException("This object is not found in the game");
-        }
 
         GameResultDto gameResultDto = new GameResultDto();
         gameResultDto.setPlayersChoice(choice);
